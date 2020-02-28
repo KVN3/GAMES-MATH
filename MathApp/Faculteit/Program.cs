@@ -6,7 +6,7 @@ namespace Faculteit
     {
         static void Main(string[] args)
         {
-            //new Program().QueryFaculty(false);
+            new Program().QueryFaculty(false);
             new Program().QueryFaculty(true);
         }
 
@@ -57,10 +57,7 @@ namespace Faculteit
                 Console.WriteLine($"f({currentNumber}) = {currentNumber} x f({currentNumber - 1}) = {currentValue}");
             }
             else
-            {
                 Console.WriteLine($"f({currentNumber}) = {currentValue}");
-            }
-
 
             currentNumber++;
 

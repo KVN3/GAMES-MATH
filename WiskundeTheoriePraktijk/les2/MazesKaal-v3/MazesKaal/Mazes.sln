@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazes", "Mazes.csproj", "{77ECD172-B71E-4A4A-98B2-821001A52F5A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77ECD172-B71E-4A4A-98B2-821001A52F5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77ECD172-B71E-4A4A-98B2-821001A52F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77ECD172-B71E-4A4A-98B2-821001A52F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77ECD172-B71E-4A4A-98B2-821001A52F5A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
