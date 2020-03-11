@@ -149,8 +149,18 @@ namespace Mazes
             return solutionFound;
         }
 
+        private bool IsOutsideMazeBoundaries(int r, int c)
+        {
+            return (r >= squareSizeH || r < 0 || c >= squareSizeW || c < 0);
+        }
+
+
         public void Solve(int r, int c)
         {
+            // Reset these, so you can keep trying different solutions without restarting
+            pad = new bool[squareSizeW * squareSizeH];
+            solutionPad = new int[squareSizeW * squareSizeH];
+
             solutionFound = false;
             numberOfSolutionCells = 0;
             if (cellMatrix != null)
@@ -160,53 +170,37 @@ namespace Mazes
 
         private void Solve(int level, int r, int c)
         {
-            // Ben ik buiten de doolhof
-            if (cellMatrix[r, c] == 0)
+            if (IsOutsideMazeBoundaries(r, c) && level > 0)
             {
-                Solved();
+                solutionFound = true;
+                return;
             }
-            else
+
+            // Ben ik hier nog niet geweest
+            if (pad[r * squareSizeW + c] == false)
             {
-                //  Add this to the solution
+                // Markeer de cel als bezocht
+                pad[r * squareSizeW + c] = true;
+
                 level++;
-                solutionPad[level] = r * squareSizeW + c;
 
-                // Ben ik hier nog niet geweest
-                if (pad[r * squareSizeW + c] == false)
+                // Decision making
+                if ((cellMatrix[r, c] & 8) <= 0 && !Solved()) // Go down   
+                    Solve(level, r + 1, c);
+                if ((cellMatrix[r, c] & 4) <= 0 && !Solved()) // Go right
+                    Solve(level, r, c + 1);
+                if ((cellMatrix[r, c] & 2) <= 0 && !Solved()) // Go up
+                    Solve(level, r - 1, c);
+                if ((cellMatrix[r, c] & 1) <= 0 && !Solved()) // Go left
+                    Solve(level, r, c - 1);
+
+                // Als de oplossing gevonden is dan hoort dit vakje bij de	oplossing
+                if (Solved())
                 {
-                    // Markeer de cel als bezocht
-                    pad[r * squareSizeW + c] = true;
-
-                    // Go down       
-                    if ((cellMatrix[r, c] & 3) != 1)
-                    {
-                        Solve(level, r, c - 1);
-                    }
-
-                    // Go right
-                    if ((cellMatrix[r, c] & 2) != 1)
-                    {
-                        Solve(level, r + 1, c);
-                    }
-
-                    // Go up
-                    if ((cellMatrix[r, c] & 1) != 1)
-                    {
-                        Solve(level, r, c + 1);
-                    }
-
-                    // Go left
-                    if ((cellMatrix[r, c] & 0) != 1)
-                    {
-                        Solve(level, r - 1, c);
-                    }
+                    solutionPad[level - 1] = r * squareSizeW + c;
+                    numberOfSolutionCells++;
                 }
             }
-        }
-
-        private bool IsBitSet(int value, int pos)
-        {
-            return (value & (1 << pos)) != 0;
         }
         #endregion
 
