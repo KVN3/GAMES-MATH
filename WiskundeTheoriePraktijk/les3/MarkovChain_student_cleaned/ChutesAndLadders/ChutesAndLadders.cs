@@ -43,6 +43,7 @@
 
             // initialize the transition matrix
             InitTransitionMatrix();
+            PrintTransitionMatrix();
 
             // start at position 0
             Position[0] = 1;    // chance at 'off board position' is 100%
@@ -87,14 +88,22 @@
                     transitionMatrix[huidigVakje, vakje] = 0;
                 }
 
-                // Dobbelsteen voor de komende 6 vakjes
-                for (int vakje = huidigVakje + 1; vakje < 6; vakje++)
+                // Fill the transition matrix.
+                for (int rol = 1; rol < 7; rol++)
                 {
-                    int index = chutesAndladders.FindIndex(f => f.StartPosition == vakje);
+                    int nieuwVakje = huidigVakje + rol;
+
+                    // If you roll a number that puts you beyond 100, you stay in your original spot (ORIGINAL). In this case you'll jump to 100 instead (As per the example).
+                    if (nieuwVakje > 100)
+                        nieuwVakje = 100;
+
+                    // Apply ladders and chutes rules.
+                    int index = chutesAndladders.FindIndex(f => f.StartPosition == nieuwVakje);
                     if (index >= 0)
-                        transitionMatrix[huidigVakje, chutesAndladders[index].EndPosition] = (double)1 / 6;
-                    else
-                        transitionMatrix[huidigVakje, vakje] = (double)1 / 6; // De kans om naar dit vakje te gaan
+                        nieuwVakje = chutesAndladders[index].EndPosition;
+
+                    // Update the chance in the matrix to go from 'huidigVakje' to 'nieuwVakje'.
+                    transitionMatrix[huidigVakje, nieuwVakje] += (double)1 / 6;
                 }
             }
         }
@@ -102,20 +111,56 @@
         /// <summary>Make the next move.</summary>
         public void NextMove()
         {
+            double[] newPositionChances = new double[NumberOfPositions + 1];
 
-            for (int x = 0; x < Position.Length; x++)
+            for (int j = 0; j < NumberOfPositions + 1; j++)
             {
-                Position[x] = Position[x] * 1;
+                double actueleKans = 0;
                 for (int i = 0; i < NumberOfPositions + 1; i++)
                 {
-                    Position[5] = Position[x] * transitionMatrix[x, i];
+                    double positieI = Position[i];
+                    double kans = transitionMatrix[i, j];
+
+                    actueleKans += positieI * kans;
                 }
+
+                newPositionChances[j] = actueleKans;
             }
 
-
-
+            Position = newPositionChances;
 
             nrOfMoves++;
+        }
+
+        private void PrintTransitionMatrix()
+        {
+            int rowLength = transitionMatrix.GetLength(0);
+            int colLength = transitionMatrix.GetLength(1);
+
+            for (int i = 0; i < rowLength; i++)
+            {
+                for (int j = 0; j < colLength; j++)
+                {
+                    if (transitionMatrix[i, j] > 0)
+                        Console.Write(string.Format("{0}", j));
+
+                }
+                Console.Write(Environment.NewLine + Environment.NewLine);
+            }
+
+            Console.WriteLine("-----------------------------------------------------");
+
+            for (int i = 0; i < rowLength; i++)
+            {
+                for (int j = 0; j < colLength; j++)
+                {
+                    if (transitionMatrix[i, j] > 0)
+                        Console.Write(string.Format("({0}){1} ", j, transitionMatrix[i, j]));
+
+                }
+                Console.Write(Environment.NewLine + Environment.NewLine);
+            }
+            Console.ReadLine();
         }
     }
 }
