@@ -185,13 +185,13 @@ namespace Mazes
                 level++;
 
                 // Decision making
-                if ((cellMatrix[r, c] & 8) <= 0 && !Solved()) // Go down   
+                if ((cellMatrix[r, c] & 8) == 0 && !Solved()) // Go down   
                     Solve(level, r + 1, c);
-                if ((cellMatrix[r, c] & 4) <= 0 && !Solved()) // Go right
+                if ((cellMatrix[r, c] & 4) == 0 && !Solved()) // Go right
                     Solve(level, r, c + 1);
-                if ((cellMatrix[r, c] & 2) <= 0 && !Solved()) // Go up
+                if ((cellMatrix[r, c] & 2) == 0 && !Solved()) // Go up
                     Solve(level, r - 1, c);
-                if ((cellMatrix[r, c] & 1) <= 0 && !Solved()) // Go left
+                if ((cellMatrix[r, c] & 1) == 0 && !Solved()) // Go left
                     Solve(level, r, c - 1);
 
                 // Als de oplossing gevonden is dan hoort dit vakje bij de	oplossing
