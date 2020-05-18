@@ -113,18 +113,20 @@
         {
             double[] newPositionChances = new double[NumberOfPositions + 1];
 
-            for (int j = 0; j < NumberOfPositions + 1; j++)
+            // Every position, we calculate the chances
+            for (int naar = 0; naar < NumberOfPositions + 1; naar++)
             {
                 double actueleKans = 0;
-                for (int i = 0; i < NumberOfPositions + 1; i++)
+                for (int van = 0; van < NumberOfPositions + 1; van++)
                 {
-                    double positieI = Position[i];
-                    double kans = transitionMatrix[i, j];
+                    double positieI = Position[van];
+                    double kans = transitionMatrix[van, naar];
 
                     actueleKans += positieI * kans;
                 }
 
-                newPositionChances[j] = actueleKans;
+                // Update the square in the new array
+                newPositionChances[naar] = actueleKans;
             }
 
             Position = newPositionChances;
