@@ -54,5 +54,13 @@ namespace Huffman
         {
             return userObject.count;
         }
+
+        public bool IsLeaf()
+        {
+            if (rechts == null && links == null)
+                return true;
+            else
+                return false;
+        }
     }
 }
